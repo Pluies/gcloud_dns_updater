@@ -1,16 +1,16 @@
-ovh_dns_updater
+gcloud_dns_updater
 ===============
 
-Python script to be ran inside a Kubernetes cluster to grab nodes' IPs and update corresponding DNS records in OVH.
+Python script to be ran inside a Kubernetes cluster to grab nodes' IPs and update corresponding DNS records in a Google Cloud Domain.
 
 Configuration
 -------------
 
 This script expects the following env vars to be set:
 
-- `OVH_APPLICATION_KEY`, `OVH_APPLICATION_SECRET`, `OVH_CONSUMER_KEY`:
+- `GCLOUD_ZONE_NAME`, `GCLOUD_DOMAIN`:
 
-OVH credentials as per [OVH token creation page](https://api.ovh.com/createToken/index.cgi?GET=/*&PUT=/*&POST=/*&DELETE=/*)
+Details of the Google Cloud Managed Zone to update. For example, `GCLOUD_ZONE_NAME=acme-co` and `GCLOUD_DOMAIN=example.com`
 
 - `DNS_ZONE`, `DNS_SUBDOMAIN`:
 
@@ -19,4 +19,4 @@ Zone and subdomain, e.g. `DNS_ZONE=example.dom` `DNS_SUBDOMAIN=kubernetes` to up
 Run
 ---
 
-    python ./ovh_dns_updater.py
+    python ./gcloud_dns_updater.py
