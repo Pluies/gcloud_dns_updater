@@ -1,5 +1,6 @@
 import json
 import os
+import time
 from google.cloud import dns
 from kubernetes import client, config
 
@@ -36,15 +37,25 @@ zone_name = os.getenv('GCLOUD_ZONE_NAME')
 domain    = os.getenv('GCLOUD_DOMAIN')
 
 zone = client.zone(zone_name, domain)
-record_set = zone.resource_record_set(
-   domain,
-   'A',
-   30,
-   external_ips)
 changes = zone.changes()
+
+# Search for an existing record
+records = zone.list_resource_record_sets()
+for record in records:
+    if (record.record_type == 'A' and record.name == domain and record.ttl == 30):
+        changes.delete_record_set(record)
+
+record_set = zone.resource_record_set(
+        domain,
+        'A',
+        30,
+        external_ips)
 changes.add_record_set(record_set)
+
 changes.create()
 while changes.status != 'done':
     print('Waiting for changes to complete...')
     time.sleep(10)
     changes.reload()
+
+print('Changes complete!')
