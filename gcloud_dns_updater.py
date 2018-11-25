@@ -37,7 +37,7 @@ domain    = os.getenv('GCLOUD_DOMAIN')
 
 zone = client.zone(zone_name, domain)
 record_set = zone.resource_record_set(
-   'www.example.com.',
+   domain,
    'A',
    30,
    external_ips)
